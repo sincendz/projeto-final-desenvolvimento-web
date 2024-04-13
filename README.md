@@ -15,16 +15,16 @@ usuário não registrado
 
 ## :spiral_calendar: Entidades ou tabelas do sistema
 
-Produtos
-Pedidos
-Carrinho
-Usuario
+- Produtos
+- Pedidos
+- Carrinho
+- Usuário
 
 ## :triangular_flag_on_post:	 Principais funcionalidades da aplicação
 
-Administrador : Podera adicionar,atualizar e remover produtos do catalogo.
-Usuario registrado: Podera visualizar os produtos, adicionar ao carrinho, finalizar compras.
-Usuario nao registrado: Podera visualizar os produtos e adicionar ao carrinho.
+- Administrador : Poderá adicionar,atualizar e remover produtos do catalogo.
+- Usuário registrado: Poderá visualizar os produtos, adicionar ao carrinho, finalizar compras.
+- Usuário nao registrado: Poderá visualizar os produtos e adicionar ao carrinho.
 
 
 ----
