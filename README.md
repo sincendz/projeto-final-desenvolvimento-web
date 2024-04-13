@@ -1,24 +1,30 @@
-# :checkered_flag: NOME DO PROJETO
+# :checkered_flag: coffeeshop ☕
 
-Breve descrição do que o seu projeto faz.
+
+Uma loja de venda de cafés e equipamentos para a produção de café.
 
 ## :technologist: Membros da equipe
 
-Matrícula, nome e curso dos participantes.
+542056 - Mário Martins Aragão - Ciência da Computação
 
 ## :people_holding_hands: Papéis ou tipos de usuário da aplicação
 
-Informe aqui os tipos de usuário que irão interagir com a aplicação. Ex: administrador, locador, locatario, usuário não logado.
-
-> Tenha em mente que obrigatoriamente a aplicação deve possuir funcionalidades acessíveis a todos os tipos de usuário e outra funcionalidades restritas a certos tipos de usuários.
+Administrador
+Usuário registrado
+usuário não registrado
 
 ## :spiral_calendar: Entidades ou tabelas do sistema
 
-Liste as principais entidades do sistema.
+Produtos
+Pedidos
+Carrinho
+Usuario
 
 ## :triangular_flag_on_post:	 Principais funcionalidades da aplicação
 
-Descreve ou liste brevemente as principais funcionalidades da aplicação que será desenvolvida. Destaque a funcionalidades que serão acessévies a todos os usuários e aquelas restriras a usuários logados.
+Administrador : Podera adicionar,atualizar e remover produtos do catalogo.
+Usuario registrado: Podera visualizar os produtos, adicionar ao carrinho, finalizar compras.
+Usuario nao registrado: Podera visualizar os produtos e adicionar ao carrinho.
 
 
 ----
