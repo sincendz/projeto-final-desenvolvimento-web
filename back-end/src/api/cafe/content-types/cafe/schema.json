@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "cafes",
+  "info": {
+    "singularName": "cafe",
+    "pluralName": "cafes",
+    "displayName": "Cafe",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "price": {
+      "type": "decimal"
+    },
+    "foto": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "summary": {
+      "type": "text"
+    }
+  }
+}
