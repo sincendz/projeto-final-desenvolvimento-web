@@ -1,15 +1,23 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-// import HelloWorld from './components/HelloWorld.vue'
-import AppNavBar from './components/AppNavBar.vue'
-</script>
-
 <template>
-  <nav>
-    <AppNavBar />
-  </nav>
+  <header>
+    <Navbar/>
+  </header>
 
-  <RouterView />
+  <main class="pt-5"> <!-- Ajuste o valor da margem conforme necessário -->
+    <RouterView />
+  </main>
 </template>
 
-<style scoped></style>
+<script setup lang="ts">
+import Navbar from './components/Navbar.vue';
+</script>
+
+<style scoped>
+header {
+  position: relative;
+}
+
+main {
+  padding-top: 56px; /* Ajuste este valor para corresponder à altura da sua navbar */
+}
+</style>
