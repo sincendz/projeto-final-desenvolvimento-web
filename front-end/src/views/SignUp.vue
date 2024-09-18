@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+    <div class="d-flex justify-content-center align-items-center vh-100 bg-dark">
       <form class="p-4 bg-white border rounded shadow-sm" style="width: 520px" @submit.prevent="handleSubmit">
         <img
           src="../img/aplicativo-web.png"

@@ -27,6 +27,5 @@ export interface ApplicationError {
   error: {
     name: string;
     message: string;
-    code?: number; // Adiciona a propriedade 'code'
   };
 }
