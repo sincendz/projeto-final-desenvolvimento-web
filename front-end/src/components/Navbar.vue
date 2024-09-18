@@ -30,7 +30,7 @@
             <button class="btn btn btn-danger" @click="logout">Logout</button>
           </li>
           <li class="nav-item" v-else>
-            <RouterLink class="nav-link" to="/login">Login</RouterLink>
+            <RouterLink class=" btn btn-secondary" to="/login">Login</RouterLink>
           </li>
         </ul>
       </div>
