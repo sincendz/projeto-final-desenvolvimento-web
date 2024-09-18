@@ -5,5 +5,5 @@
 </template>
 
 <script setup lang="ts">
-import CafeCard from "@/components/Cafecrd.vue";
+import CafeCard from "@/components/Cafecard.vue";
 </script>
