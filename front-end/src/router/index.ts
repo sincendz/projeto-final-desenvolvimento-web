@@ -2,7 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "@/views/Home.vue";
 import Login from "@/views/Login.vue";
 import SignUp from "@/views/SignUp.vue";
-
+import { useAuth } from "@/stores/auth"; // Importe o store de autenticação
+import Admin from "@/views/Admin.vue";
 const routes = [
   {
     path: "/",
@@ -11,25 +12,42 @@ const routes = [
   },
   {
     path: "/signup",
-    name: "SignUp",
+    name: "signup",
     component: SignUp,
   },
   {
     path: "/home",
-    name: "home",
+    name: "home-alias",
     component: Home,
   },
   {
     path: "/login",
     name: "login",
-    component: Login, // ou você pode usar import dinâmico
-    // component: () => import('../views/Login.vue')
+    component: Login,
+  },
+  {
+    path: "/teste",
+    name: "admin",
+    component: Admin,
+    meta: { requiresAuth: true }  // Adicione um meta campo para verificar autenticação
   },
 ];
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
+});
+
+// Guarda de navegação global para verificar autenticação
+router.beforeEach((to, from, next) => {
+  const auth = useAuth();
+  const isAuthenticated = auth.isAuthenticated();
+  
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    next({ name: 'login' });  // Redireciona para a página de login se não autenticado
+  } else {
+    next();  // Permite a navegação se o usuário estiver autenticado ou a rota não exigir autenticação
+  }
 });
 
 export default router;

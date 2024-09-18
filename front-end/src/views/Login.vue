@@ -64,7 +64,7 @@ async function login() {
       identifier: user.email, // O campo "identifier" é o e-mail ou username no Strapi
       password: user.password, // O campo "password" é a senha
     });
-    console.log("Login bem-sucedido:", data.user.email);
+    console.log("Login bem-sucedido:", data.user.username);
     auth.setJwt(data.jwt)
     auth.setUser(data.user)
 
