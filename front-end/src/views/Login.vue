@@ -48,7 +48,9 @@
 import { api, BASE_URL } from "@/api";
 import { useAuth } from "@/stores/auth";
 import { reactive, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+
+const route = useRouter()
 
 const auth = useAuth();
 
@@ -70,6 +72,7 @@ async function login() {
 
     // Você pode salvar o token JWT retornado para manter a sessão
     localStorage.setItem("jwt", data.jwt);
+    route.push('\home')
   } catch (error) {
     console.error(
       "Erro de login:",
