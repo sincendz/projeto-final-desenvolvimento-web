@@ -48,7 +48,9 @@
 import { api, BASE_URL } from "@/api";
 import { useAuth } from "@/stores/auth";
 import { reactive, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+
+const route = useRouter()
 
 const auth = useAuth();
 
@@ -64,12 +66,13 @@ async function login() {
       identifier: user.email, // O campo "identifier" é o e-mail ou username no Strapi
       password: user.password, // O campo "password" é a senha
     });
-    console.log("Login bem-sucedido:", data.user.email);
+    console.log("Login bem-sucedido:", data.user.username);
     auth.setJwt(data.jwt)
     auth.setUser(data.user)
 
     // Você pode salvar o token JWT retornado para manter a sessão
     localStorage.setItem("jwt", data.jwt);
+    route.push('\home')
   } catch (error) {
     console.error(
       "Erro de login:",

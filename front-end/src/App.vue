@@ -19,5 +19,6 @@ header {
 
 main {
   padding-top: 56px; /* Ajuste este valor para corresponder à altura da sua navbar */
+  background-color: aquamarine;
 }
 </style>

@@ -68,6 +68,12 @@ onMounted(fetchData);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  
+}
+
+.card-body:hover{
+  transform: scale(1.08);
+  background-color: aqua;
 }
 
 .card-title, .card-text {
