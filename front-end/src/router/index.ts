@@ -4,6 +4,8 @@ import Login from "@/views/Login.vue";
 import SignUp from "@/views/SignUp.vue";
 import { useAuth } from "@/stores/auth"; // Importe o store de autenticação
 import Admin from "@/views/Admin.vue";
+import { Component } from "react";
+import CreateProduct from "@/views/createProduct.vue";
 const routes = [
   {
     path: "/",
@@ -29,8 +31,13 @@ const routes = [
     path: "/teste",
     name: "admin",
     component: Admin,
-    meta: { requiresAuth: true }  // Adicione um meta campo para verificar autenticação
+     meta: { requiresAuth: true }  // Adicione um meta campo para verificar autenticação
   },
+  {
+    path:'/create',
+    name:"create",
+    component: CreateProduct
+  }
 ];
 
 const router = createRouter({
