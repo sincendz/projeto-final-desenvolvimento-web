@@ -1,45 +1,41 @@
-<script lang="ts">
+<script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { api, BASE_URL } from "@/api";
 import type { Cafe } from "@/types/Cafe";
 
-export default {
-  setup() {
-    const cafes = ref<Cafe[]>([]);
-    const error = ref("");
-    const success = ref("");
+const cafes = ref<Cafe[]>([]);
+const error = ref("");
+const success = ref("");
+// const modalDeletar = ref(false);
+const idCafeDeletar = ref(0)
 
-    async function deletar(id: number) {
-      try {
-        await api.delete(`/cafes/${id}`);
-        success.value = "Café excluído com sucesso!";
-        await fetchData(); // Atualiza a lista de cafés
-      } catch (err: any) {
-        error.value = `Erro ao excluir café: ${err.message}`;
-      }
-    }
 
-    const fetchData = async () => {
-      try {
-        const response = await api.get(BASE_URL + "/api/cafes?populate=*");
-        cafes.value = response.data.data;
-        success.value = ""; // Limpa a mensagem de sucesso após a atualização dos dados
-      } catch (err: any) {
-        error.value = `Erro ao buscar dados: ${err.message}`;
-      }
-    };
+function idCafe(id:number){
+  idCafeDeletar.value = id;
+}
 
-    onMounted(fetchData);
+async function deletar(id: number) {
+  try {
+    await api.delete(`/cafes/${id}`);
+    success.value = "Café excluído com sucesso!";
+    await fetchData(); // Atualiza a lista de cafés
+  } catch (err: any) {
+    error.value = `Erro ao excluir café: ${err.message}`;
+  }
+}
 
-    return {
-      cafes,
-      error,
-      success,
-      BASE_URL,
-      deletar,
-    };
-  },
+const fetchData = async () => {
+  try {
+    const response = await api.get(BASE_URL + "/api/cafes?populate=*");
+    cafes.value = response.data.data;
+    // console.log(response.data.data)
+    success.value = "";
+  } catch (err: any) {
+    error.value = `Erro ao buscar dados: ${err.message}`;
+  }
 };
+
+onMounted(fetchData);
 </script>
 
 <template>
@@ -52,12 +48,6 @@ export default {
         {{ success }}
       </div>
       <div v-else>
-        <!-- <div class="d-flex justify-content-between mb-3">
-          <h2 class="text-primary">Lista de Cafés</h2>
-          <RouterLink to="/create" type="button" class="btn btn-success">
-            <i class="bi bi-plus-lg"></i> Novo Café
-          </RouterLink>
-        </div> -->
         <table class="table table-hover table-bordered table-striped shadow-sm">
           <thead class="thead-dark">
             <tr>
@@ -66,10 +56,12 @@ export default {
               <th scope="col">Preço</th>
               <th scope="col">Descrição</th>
               <th scope="col">Foto</th>
-              <th scope="col"><RouterLink to="/create" type="button" class="btn btn-success">
-            <i class="bi bi-plus-sm"></i> Novo Café
-          </RouterLink></th>
-            </tr><P></P>
+              <th scope="col">
+                <RouterLink to="/create" type="button" class="btn btn-success">
+                  <i class="bi bi-plus-sm"></i> Novo Café
+                </RouterLink>
+              </th>
+            </tr>
           </thead>
           <tbody>
             <tr v-for="item in cafes" :key="item.id">
@@ -77,7 +69,7 @@ export default {
               <td>{{ item.name }}</td>
               <td>{{ item.price.toFixed(2) }} R$</td>
               <td>{{ item.summary }}</td>
-              <td v-if="item.foto && item.foto.length > 0">
+              <td v-if="item.foto">
                 <img
                   :src="BASE_URL + item.foto[0].url"
                   :alt="item.name"
@@ -89,7 +81,13 @@ export default {
                 <span class="text-muted">Sem foto disponível</span>
               </td>
               <td>
-                <button @click="deletar(item.id)" type="button" class="btn btn-danger btn-sm">
+                <button
+                  @click="idCafe(item.id)"
+                  type="button"
+                  class="btn btn-danger btn-sm"
+                  data-bs-toggle="modal"
+                  data-bs-target="#staticBackdrop"
+                >
                   <i class="bi bi-trash"></i>
                 </button>
                 <button type="button" class="btn btn-warning btn-sm">
@@ -99,6 +97,41 @@ export default {
             </tr>
           </tbody>
         </table>
+      </div>
+    </div>
+  </div>
+  <!-- Modal Exluir os cafes -->
+  <div
+    class="modal fade"
+    id="staticBackdrop"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    tabindex="-1"
+    aria-labelledby="staticBackdropLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Apagar item</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">Voce realmente quer apagar esse item? Essa acao nao tem volta!</div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Fechar
+          </button>
+          <button @click="deletar(idCafeDeletar)" type="button" class="btn btn-primary" data-bs-dismiss="modal" >Apagar</button>
+        </div>
       </div>
     </div>
   </div>
