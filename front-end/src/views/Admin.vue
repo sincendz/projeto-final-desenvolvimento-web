@@ -43,7 +43,7 @@ export default {
 </script>
 
 <template>
-  <div class="d-flex justify-content-center align-items-center" style="height: 130vh; background-color: #f8f9fa;">
+  <div class="d-flex justify-content-center align-items-center">
     <div class="container">
       <div v-if="error" class="alert alert-danger" role="alert">
         {{ error }}
@@ -52,12 +52,12 @@ export default {
         {{ success }}
       </div>
       <div v-else>
-        <div class="d-flex justify-content-between mb-3">
+        <!-- <div class="d-flex justify-content-between mb-3">
           <h2 class="text-primary">Lista de Cafés</h2>
           <RouterLink to="/create" type="button" class="btn btn-success">
             <i class="bi bi-plus-lg"></i> Novo Café
           </RouterLink>
-        </div>
+        </div> -->
         <table class="table table-hover table-bordered table-striped shadow-sm">
           <thead class="thead-dark">
             <tr>
@@ -66,8 +66,10 @@ export default {
               <th scope="col">Preço</th>
               <th scope="col">Descrição</th>
               <th scope="col">Foto</th>
-              <th scope="col">Ações</th>
-            </tr>
+              <th scope="col"><RouterLink to="/create" type="button" class="btn btn-success">
+            <i class="bi bi-plus-sm"></i> Novo Café
+          </RouterLink></th>
+            </tr><P></P>
           </thead>
           <tbody>
             <tr v-for="item in cafes" :key="item.id">
