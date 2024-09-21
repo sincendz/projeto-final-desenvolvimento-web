@@ -376,7 +376,7 @@ export interface ApiCafeCafe extends Schema.CollectionType {
   attributes: {
     name: Attribute.String;
     price: Attribute.Decimal;
-    foto: Attribute.Media<'images' | 'files' | 'videos' | 'audios', true>;
+    foto: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     summary: Attribute.Text;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;

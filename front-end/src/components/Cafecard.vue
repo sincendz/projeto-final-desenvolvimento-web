@@ -7,7 +7,7 @@
             <div class="card-body d-flex flex-column">
               <div class="d-flex justify-content-center mb-3">
                 <img
-                  :src="BASE_URL + item.foto[0].url"
+                  :src="BASE_URL + item.foto.url"
                   :alt="item.name"
                   class="img-fluid card-image"
                 />
@@ -44,7 +44,7 @@ const fetchData = async () => {
   try {
     const response = await api.get(BASE_URL + "/api/cafes?populate=*");
     cafes.value = response.data.data;
-    // console.log(response.data.data);
+    console.log(response.data.data);
   } catch (err) {
     error.value = `Erro ao buscar dados: ${err.message}`;
   }

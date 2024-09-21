@@ -22,7 +22,7 @@
           <!-- Outras rotas se necessário -->
         </ul>
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <img v-if="isAuthenticated" src="../img//image.png" alt="Imagem Usuario" class="navbar-logo">
+          <img v-if="isAuthenticated" src="../img//user.png" alt="Imagem Usuario" class="navbar-logo">
           <li class="nav-item" v-if="isAuthenticated">
             <span  class="nav-link">Olá, {{ user.username }}</span>
           </li>
@@ -56,8 +56,7 @@ function logout() {
 </script>
 
 <style scoped>
-/* Estilos específicos para a navbar, se necessário */
 .navbar-logo {
-  width: 50px; /* Ajuste conforme necessário */
+  width: 40px;
 }
 </style>

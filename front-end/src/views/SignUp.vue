@@ -96,9 +96,11 @@
 
 <script setup lang="ts">
 import { api } from "@/api";
+import { useAuth } from "@/stores/auth";
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 
+const auth = useAuth()
 
 const firstName = ref("");
 const lastName = ref("");
@@ -133,8 +135,16 @@ const handleSubmit = async () => {
       password: password.value,
     });
     console.log("Usuário criado:", response.data);
+    console.log("Usuário criado:", response.data.user.username);
+    
 
-    router.push('/login')
+    auth.setJwt(response.data.jwt)
+    auth.setUser(response.data.user)
+
+    localStorage.setItem("jwt", response.data.jwt)
+    
+
+    router.push('/home')
 
     firstName.value = "";
     lastName.value = "";

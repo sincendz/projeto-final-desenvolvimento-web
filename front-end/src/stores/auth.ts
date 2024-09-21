@@ -1,17 +1,20 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import type { User } from "@/types/Cafe";
 
-interface User {
-  // Defina a estrutura do usuário de acordo com seu modelo
-  id: string;
-  name: string;
-  email: string;
-}
 
 export const useAuth = defineStore("auth", () => {
   const jwt = ref<string | null>(localStorage.getItem("jwt"));
-  const user = ref<User | null>(JSON.parse(localStorage.getItem("user") || "null"));
-
+   const user = ref<User | null>(JSON.parse(localStorage.getItem("user") || "null"));
+  // const user = ref<User>({
+  //   id: Number(localStorage.getItem('id')),
+  //   username:  localStorage.getItem('username') || "",
+  //   email: localStorage.getItem('email') || "",
+  //   role: {
+  //     name: localStorage.getItem('role') || ""
+  //   }
+  // })
+  
   // Função para definir o token JWT
   function setJwt(jwtValue: string) {
     localStorage.setItem("jwt", jwtValue);
