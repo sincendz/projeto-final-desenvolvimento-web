@@ -56,12 +56,17 @@ function itensEditar(
   console.log("Foto atual: ", cafesEditar.value.foto);
 }
 
-
 async function handleFileUpload(event: Event) {
-    //await deleteImg();
+  //await deleteImg();
   const inputEvent = event as InputEvent;
   const target = inputEvent.target as HTMLInputElement;
   cafesEditar.value.foto = target.files?.item(0) as File;
+}
+
+function CreatehandleFileUpload(event: Event){
+  const inputEvent = event as InputEvent;
+  const target = inputEvent.target as HTMLInputElement;
+  cafess.value.foto = target.files?.item(0) as File;
 }
 
 const submitForm = async () => {
@@ -94,6 +99,42 @@ const submitForm = async () => {
   }
 };
 
+const cafess = ref({
+  name: "",
+  price: "",
+  summary: "",
+  foto: null as File | null,
+});
+
+const CreatesubmitForm = async () => {
+  try {
+    const formData = new FormData();
+    formData.append("files.foto", cafess.value.foto as File);
+    formData.append(
+      "data",
+      JSON.stringify({
+        name: cafess.value.name,
+        price: cafess.value.price,
+        summary: cafess.value.summary,
+      })
+    );
+
+    const response = await api.post("/cafes", formData, {
+      headers: {
+        Authorization: `Bearer ${auth.jwt}`,
+      },
+    });
+    fetchData();
+    cafess.value.name = ''
+    cafess.value.price = ''
+    cafess.value.summary = ''
+    cafess.value.foto = null
+    console.log(response.data.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 onMounted(fetchData);
 </script>
@@ -117,9 +158,23 @@ onMounted(fetchData);
               <th scope="col">Descrição</th>
               <th scope="col">Foto</th>
               <th scope="col">
-                <RouterLink to="/create" type="button" class="btn btn-success">
-                  <i class="bi bi-plus-sm"></i> Novo Café
-                </RouterLink>
+                <button
+                  type="button"
+                  class="btn btn-primary btn-sm"
+                  data-bs-toggle="modal"
+                  data-bs-target="#criarCafe"
+                  @click="
+                    itensEditar(
+                      item.id,
+                      item.name,
+                      item.price,
+                      item.summary,
+                      item.foto
+                    )
+                  "
+                >
+                  <i class="bi bi-pencil"></i> Novo café
+                </button>
               </th>
             </tr>
           </thead>
@@ -149,13 +204,14 @@ onMounted(fetchData);
                   data-bs-target="#apagarCafe"
                 >
                   <i class="bi bi-trash"></i>
+                  Apagar
                 </button>
-                <button type="button" class="btn btn-warning btn-sm">
+                <!-- <button type="button" class="btn btn-warning btn-sm">
                   <i class="bi bi-pencil"></i>
-                </button>
+                </button> -->
                 <button
                   type="button"
-                  class="btn btn-primary"
+                  class="btn btn-warning btn-sm"
                   data-bs-toggle="modal"
                   data-bs-target="#staticBackdrop"
                   @click="
@@ -168,7 +224,7 @@ onMounted(fetchData);
                     )
                   "
                 >
-                  Launch static backdrop modal
+                  <i class="bi bi-pencil"></i> Editar
                 </button>
               </td>
             </tr>
@@ -303,6 +359,96 @@ onMounted(fetchData);
           </button>
           <button
             @click="submitForm"
+            type="button"
+            class="btn btn-primary"
+            data-bs-dismiss="modal"
+          >
+            Salvar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal criar cafe -->
+
+  <div
+    class="modal fade"
+    id="criarCafe"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    tabindex="-1"
+    aria-labelledby="staticBackdropLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Criar Café</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="cafeName" class="form-label">Nome</label>
+              <input
+                v-model="cafess.name"
+                type="text"
+                class="form-control"
+                id="cafeName"
+                placeholder="Digite o nome do café"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="cafePrice" class="form-label">Preço</label>
+              <input
+                v-model="cafess.price"
+                type="number"
+                class="form-control"
+                id="cafePrice"
+                placeholder="Digite o preço do café"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="cafeDescription" class="form-label">Descrição</label>
+              <textarea
+              v-model="cafess.summary"
+                class="form-control"
+                id="cafeDescription"
+                rows="3"
+                placeholder="Digite uma descrição do café"
+                required
+              ></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="cafePhoto" class="form-label">Foto</label>
+              <input
+                type="file"
+                class="form-control"
+                id="cafePhoto"
+                @change="CreatehandleFileUpload"
+                required
+              />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Fechar
+          </button>
+          <button
+            @click="CreatesubmitForm"
             type="button"
             class="btn btn-primary"
             data-bs-dismiss="modal"
