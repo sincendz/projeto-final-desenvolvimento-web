@@ -2,15 +2,16 @@
 import { ref, onMounted } from "vue";
 import { api, BASE_URL } from "@/api";
 import type { Cafe } from "@/types/Cafe";
+import { useAuth } from "@/stores/auth";
 
 const cafes = ref<Cafe[]>([]);
 const error = ref("");
 const success = ref("");
-// const modalDeletar = ref(false);
-const idCafeDeletar = ref(0)
+const idCafeDeletar = ref(0);
 
+const auth = useAuth();
 
-function idCafe(id:number){
+function idCafe(id: number) {
   idCafeDeletar.value = id;
 }
 
@@ -28,13 +29,72 @@ const fetchData = async () => {
   try {
     const response = await api.get(BASE_URL + "/api/cafes?populate=*");
     cafes.value = response.data.data;
-    // console.log(response.data.data)
     success.value = "";
   } catch (err: any) {
     error.value = `Erro ao buscar dados: ${err.message}`;
   }
 };
 
+//Funçao para pegar os dados que devem ser atualizados
+
+const cafesEditar = ref({
+  id: 0,
+  name: "",
+  price: "",
+  summary: "",
+  foto: null as File | null,
+});
+
+function itensEditar(
+  id: number,
+  name: string,
+  price: string,
+  summary: string,
+  foto: null
+) {
+  cafesEditar.value = { id, name, price, summary, foto };
+  console.log("Foto atual: ", cafesEditar.value.foto);
+}
+
+
+async function handleFileUpload(event: Event) {
+    //await deleteImg();
+  const inputEvent = event as InputEvent;
+  const target = inputEvent.target as HTMLInputElement;
+  cafesEditar.value.foto = target.files?.item(0) as File;
+}
+
+const submitForm = async () => {
+  try {
+    const formData = new FormData();
+    if (cafesEditar.value.foto) {
+      formData.append("files.foto", cafesEditar.value.foto);
+    }
+    formData.append(
+      "data",
+      JSON.stringify({
+        name: cafesEditar.value.name,
+        price: cafesEditar.value.price,
+        summary: cafesEditar.value.summary,
+      })
+    );
+
+    console.log(idCafeDeletar.value);
+    const { data } = await api.put(`/cafes/${cafesEditar.value.id}`, formData, {
+      headers: {
+        Authorization: `Bearer ${auth.jwt}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    fetchData();
+    console.log("Café salvo:", data);
+  } catch (error) {
+    console.error("Erro ao enviar os dados:", error);
+    // Aqui você pode tratar o erro para mostrar ao usuário
+  }
+};
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 onMounted(fetchData);
 </script>
 
@@ -48,8 +108,8 @@ onMounted(fetchData);
         {{ success }}
       </div>
       <div v-else>
-        <table class="table table-hover table-bordered table-striped shadow-sm">
-          <thead class="thead-dark">
+        <table class="table">
+          <thead>
             <tr>
               <th scope="col">#</th>
               <th scope="col">Nome</th>
@@ -71,7 +131,7 @@ onMounted(fetchData);
               <td>{{ item.summary }}</td>
               <td v-if="item.foto">
                 <img
-                  :src="BASE_URL + item.foto[0].url"
+                  :src="BASE_URL + item.foto.url"
                   :alt="item.name"
                   class="img-fluid rounded"
                   style="max-width: 100px"
@@ -86,12 +146,29 @@ onMounted(fetchData);
                   type="button"
                   class="btn btn-danger btn-sm"
                   data-bs-toggle="modal"
-                  data-bs-target="#staticBackdrop"
+                  data-bs-target="#apagarCafe"
                 >
                   <i class="bi bi-trash"></i>
                 </button>
                 <button type="button" class="btn btn-warning btn-sm">
                   <i class="bi bi-pencil"></i>
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#staticBackdrop"
+                  @click="
+                    itensEditar(
+                      item.id,
+                      item.name,
+                      item.price,
+                      item.summary,
+                      item.foto
+                    )
+                  "
+                >
+                  Launch static backdrop modal
                 </button>
               </td>
             </tr>
@@ -100,10 +177,11 @@ onMounted(fetchData);
       </div>
     </div>
   </div>
-  <!-- Modal Exluir os cafes -->
+
+  <!-- Modal Excluir os cafés -->
   <div
     class="modal fade"
-    id="staticBackdrop"
+    id="apagarCafe"
     data-bs-backdrop="static"
     data-bs-keyboard="false"
     tabindex="-1"
@@ -121,7 +199,9 @@ onMounted(fetchData);
             aria-label="Close"
           ></button>
         </div>
-        <div class="modal-body">Voce realmente quer apagar esse item? Essa acao nao tem volta!</div>
+        <div class="modal-body">
+          Você realmente quer apagar esse item? Essa ação não tem volta!
+        </div>
         <div class="modal-footer">
           <button
             type="button"
@@ -130,7 +210,105 @@ onMounted(fetchData);
           >
             Fechar
           </button>
-          <button @click="deletar(idCafeDeletar)" type="button" class="btn btn-primary" data-bs-dismiss="modal" >Apagar</button>
+          <button
+            @click="deletar(idCafeDeletar)"
+            type="button"
+            class="btn btn-primary"
+            data-bs-dismiss="modal"
+          >
+            Apagar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal editar café -->
+  <div
+    class="modal fade"
+    id="staticBackdrop"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    tabindex="-1"
+    aria-labelledby="staticBackdropLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">
+            Editar Café ID: {{ cafesEditar.id }}
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="cafeName" class="form-label">Nome</label>
+              <input
+                v-model="cafesEditar.name"
+                type="text"
+                class="form-control"
+                id="cafeName"
+                placeholder="Digite o nome do café"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="cafePrice" class="form-label">Preço</label>
+              <input
+                v-model="cafesEditar.price"
+                type="number"
+                class="form-control"
+                id="cafePrice"
+                placeholder="Digite o preço do café"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="cafeDescription" class="form-label">Descrição</label>
+              <textarea
+                v-model="cafesEditar.summary"
+                class="form-control"
+                id="cafeDescription"
+                rows="3"
+                placeholder="Digite uma descrição do café"
+                required
+              ></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="cafePhoto" class="form-label">Foto</label>
+              <input
+                type="file"
+                class="form-control"
+                id="cafePhoto"
+                @change="handleFileUpload"
+                required
+              />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Fechar
+          </button>
+          <button
+            @click="submitForm"
+            type="button"
+            class="btn btn-primary"
+            data-bs-dismiss="modal"
+          >
+            Salvar
+          </button>
         </div>
       </div>
     </div>

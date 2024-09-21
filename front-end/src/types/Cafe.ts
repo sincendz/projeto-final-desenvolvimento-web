@@ -5,6 +5,7 @@ export type Cafe = {
   price: number;
   summary: string;
   cover: Cover;
+  index?:number;
 };
 
 type Cover = {
