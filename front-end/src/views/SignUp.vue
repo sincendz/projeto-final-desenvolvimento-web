@@ -95,12 +95,12 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed } from 'vue';
 import { api } from "@/api";
-import { useAuth } from "@/stores/auth";
-import { ref, computed } from "vue";
+import { useUserStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
 
-const auth = useAuth()
+const auth = useUserStore();
 
 const firstName = ref("");
 const lastName = ref("");
@@ -112,21 +112,23 @@ const errorMessage = ref("");
 
 const router = useRouter();
 
-function funDeuRuim() {
+const passwordMismatch = computed(() => password.value !== confirmPassword.value);
+
+const funDeuRuim = () => {
   deuruim.value = false;
+  resetForm();
+};
+
+const resetForm = () => {
+  firstName.value = "";
+  lastName.value = "";
   email.value = "";
   password.value = "";
   confirmPassword.value = "";
-}
-
-const passwordMismatch = computed(
-  () => password.value !== confirmPassword.value
-);
+};
 
 const handleSubmit = async () => {
-  if (passwordMismatch.value) {
-    return; 
-  }
+  if (passwordMismatch.value) return;
 
   try {
     const response = await api.post("/auth/local/register", {
@@ -134,27 +136,26 @@ const handleSubmit = async () => {
       email: email.value,
       password: password.value,
     });
-    console.log("Usuário criado:", response.data);
-    console.log("Usuário criado:", response.data.user.username);
     
-
-    auth.setJwt(response.data.jwt)
-    auth.setUser(response.data.user)
-
-    localStorage.setItem("jwt", response.data.jwt)
+    const { jwt } = response.data;
     
+    const res = await api.get("/users/me", {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+      params: {
+        populate: "role",
+      },
+    });
+    auth.authenticaded(res.data, jwt);
 
-    router.push('/home')
+    const role = auth.user.role.name;
+    router.push(role === 'admin' ? '/admin' : '/home');
 
-    firstName.value = "";
-    lastName.value = "";
-    email.value = "";
-    password.value = "";
-    confirmPassword.value = "";
+    resetForm();
   } catch (error) {
     deuruim.value = true;
-    errorMessage.value =
-      error.response?.data?.message || "Erro ao criar usuário.";
+    errorMessage.value = error.response?.data?.message || "Erro ao criar usuário.";
     console.error(error);
   }
 };

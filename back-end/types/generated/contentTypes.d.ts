@@ -378,6 +378,11 @@ export interface ApiCafeCafe extends Schema.CollectionType {
     price: Attribute.Decimal;
     foto: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     summary: Attribute.Text;
+    pedidos: Attribute.Relation<
+      'api::cafe.cafe',
+      'manyToMany',
+      'api::pedido.pedido'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -388,31 +393,39 @@ export interface ApiCafeCafe extends Schema.CollectionType {
   };
 }
 
-export interface ApiMovieMovie extends Schema.CollectionType {
-  collectionName: 'movies';
+export interface ApiPedidoPedido extends Schema.CollectionType {
+  collectionName: 'pedidos';
   info: {
-    singularName: 'movie';
-    pluralName: 'movies';
-    displayName: 'movies';
+    singularName: 'pedido';
+    pluralName: 'pedidos';
+    displayName: 'Pedido';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
-    id_movie: Attribute.UID;
-    titulo: Attribute.String;
-    cover: Attribute.Media<'images' | 'files' | 'videos' | 'audios', true>;
+    quantidade: Attribute.Integer;
+    cafes: Attribute.Relation<
+      'api::pedido.pedido',
+      'manyToMany',
+      'api::cafe.cafe'
+    >;
+    user: Attribute.Relation<
+      'api::pedido.pedido',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
-      'api::movie.movie',
+      'api::pedido.pedido',
       'oneToOne',
       'admin::user'
     > &
       Attribute.Private;
     updatedBy: Attribute.Relation<
-      'api::movie.movie',
+      'api::pedido.pedido',
       'oneToOne',
       'admin::user'
     > &
@@ -800,7 +813,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
     username: Attribute.String &
@@ -828,6 +840,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'plugin::users-permissions.user',
       'manyToOne',
       'plugin::users-permissions.role'
+    >;
+    pedidos: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::pedido.pedido'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -857,7 +874,7 @@ declare module '@strapi/types' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'api::cafe.cafe': ApiCafeCafe;
-      'api::movie.movie': ApiMovieMovie;
+      'api::pedido.pedido': ApiPedidoPedido;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::content-releases.release': PluginContentReleasesRelease;

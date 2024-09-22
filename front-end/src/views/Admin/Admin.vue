@@ -2,14 +2,14 @@
 import { ref, onMounted } from "vue";
 import { api, BASE_URL } from "@/api";
 import type { Cafe } from "@/types/Cafe";
-import { useAuth } from "@/stores/auth";
+import { useUserStore } from "@/stores/auth";
 
 const cafes = ref<Cafe[]>([]);
 const error = ref("");
 const success = ref("");
 const idCafeDeletar = ref(0);
 
-const auth = useAuth();
+const auth = useUserStore();
 
 function idCafe(id: number) {
   idCafeDeletar.value = id;
@@ -17,11 +17,16 @@ function idCafe(id: number) {
 
 async function deletar(id: number) {
   try {
-    await api.delete(`/cafes/${id}`);
+    const response = await api.delete(`/cafes/${id}`, {
+      headers: {
+        Authorization: `Bearer ${auth.jwt}`,
+      },
+    });
     success.value = "Café excluído com sucesso!";
-    await fetchData(); // Atualiza a lista de cafés
+    await fetchData();
   } catch (err: any) {
-    error.value = `Erro ao excluir café: ${err.message}`;
+    error.value = `Erro ao excluir café: ${err.response?.data?.message || err.message}`;
+    console.error(err);
   }
 }
 
@@ -247,7 +252,7 @@ onMounted(fetchData);
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="staticBackdropLabel">Apagar item</h1>
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Apagar item {{ idCafeDeletar }}</h1>
           <button
             type="button"
             class="btn-close"

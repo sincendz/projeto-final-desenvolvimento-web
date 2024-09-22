@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pedidos",
+  "info": {
+    "singularName": "pedido",
+    "pluralName": "pedidos",
+    "displayName": "Pedido"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "quantidade": {
+      "type": "integer"
+    },
+    "cafes": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::cafe.cafe",
+      "inversedBy": "pedidos"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "pedidos"
+    }
+  }
+}
