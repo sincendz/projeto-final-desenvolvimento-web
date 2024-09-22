@@ -31,6 +31,12 @@
     },
     "summary": {
       "type": "text"
+    },
+    "pedidos": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::pedido.pedido",
+      "mappedBy": "cafes"
     }
   }
 }

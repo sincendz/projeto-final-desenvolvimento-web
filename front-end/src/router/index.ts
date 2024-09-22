@@ -3,8 +3,9 @@ import Home from "@/views/Home.vue";
 import Login from "@/views/Login.vue";
 import SignUp from "@/views/SignUp.vue";
 import { useUserStore } from "@/stores/auth"; // Importe o store de autenticação
-import Admin from "@/views/Admin.vue";
+import Admin from "@/views/Admin/Admin.vue";
 import Usuarios from "@/views/Admin/usuarios.vue";
+import Carrinho from "@/views/Carrinho.vue";
 const routes = [
   {
     path: "/",
@@ -30,12 +31,13 @@ const routes = [
     path: "/admin",
     name: "admin",
     component: Admin,
-     meta: { requiresAuth: true, requiresRole: 'admin' }  // Adicione um meta campo para verificar autenticação
+    meta: { requiresAuth: true, requiresRole: "admin" }, // Adicione um meta campo para verificar autenticação
   },
   {
-    path: "/usuarios",
-    name: "usuarios",
-    component: Usuarios,
+    path: "/carrinho",
+    name: "carrinho",
+    component: Carrinho,
+    meta: { requiresAuth: true}
   },
 ];
 
@@ -47,18 +49,20 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const auth = useUserStore();
 
-  console.log('Rota destino:', to.name);
-  console.log('Usuário autenticado:', auth.isAuthenticated);
-  console.log('Papel do usuário:', auth.user.role?.name);
+  // console.log("Rota destino:", to.name);
+  // console.log("Usuário autenticado:", auth.isAuthenticated);
+  // console.log("Papel do usuário:", auth.user.role?.name);
 
   if (to.meta.requiresAuth && !auth.isAuthenticated) {
-    next('/login');
-  } else if (to.meta.requiresRole && auth.user.role?.name !== to.meta.requiresRole) {
-    next('/');
+    next("/login");
+  } else if (
+    to.meta.requiresRole &&
+    auth.user.role?.name !== to.meta.requiresRole
+  ) {
+    next("/");
   } else {
     next();
   }
 });
-
 
 export default router;

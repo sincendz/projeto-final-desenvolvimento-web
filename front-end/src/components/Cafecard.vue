@@ -22,8 +22,11 @@
               <div class="mt-auto">
                 <p class="card-text">
                   <strong>Preço:</strong> R$ {{ item.price.toFixed(2) }}
-                  <button @click="counter.increment" class="btn btn-outline-primary">
-                    <i  class="fa-solid fa-cart-plus"></i>
+                  <button
+                    @click="pegarIdCafe(item.id)"
+                    class="btn btn-outline-primary"
+                  >
+                    <i class="fa-solid fa-cart-plus"></i>
                   </button>
                 </p>
                 <p class="card-text">
@@ -42,15 +45,59 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { api, BASE_URL } from "@/api";
 import { useCounterStore } from "@/stores/counter";
 
+const idUsuario = localStorage.getItem("id"); // ID do usuário logado
+const jwt = localStorage.getItem("jwt");
+const idCafe = ref(0);
+
 const cafes = ref([]);
 const error = ref("");
 
-const counter = useCounterStore()
+const counter = useCounterStore();
+
+function pegarIdCafe(id: number) {
+  idCafe.value = id;
+  counter.increment;
+  addItensCarrinho();
+}
+
+const addItensCarrinho = async () => {
+  const cafes = await api.get(`/cafes/${idCafe.value}`);
+  const cafe = cafes.data.data;
+  //console.log(cafe);
+  const usuarios = await api.get(`/users/${idUsuario}`);
+  const usuario = usuarios.data;
+  //console.log(usuario);
+
+  try {
+    const response = await api.post("/pedidos", {
+      data: {
+        quantidade: 1,
+        user: usuario,
+        cafes: cafe,
+      },
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    });
+
+    console.log(response);
+  } catch (error) {
+    if (error.response) {
+      console.log(
+        "Erro ao incluir os cafes no carrinho:",
+        error.response.status,
+        error.response.data
+      );
+    } else {
+      console.log("Erro ao incluir os cafes no carrinho:", error.message.data);
+    }
+  }
+};
 
 const fetchData = async () => {
   try {
@@ -61,6 +108,10 @@ const fetchData = async () => {
     error.value = `Erro ao buscar dados: ${err.message}`;
   }
 };
+
+
+// Modal Registra usuario
+
 
 onMounted(fetchData);
 </script>

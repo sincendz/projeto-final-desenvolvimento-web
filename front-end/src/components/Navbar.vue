@@ -25,7 +25,9 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <RouterLink class="nav-link active" aria-current="page" to="/home">Home</RouterLink>
+            <RouterLink class="nav-link active" aria-current="page" to="/home"
+              >Home</RouterLink
+            >
           </li>
           <li class="nav-item" v-if="isAdmin">
             <RouterLink class="nav-link active" to="/admin">Admin</RouterLink>
@@ -34,7 +36,11 @@
 
         <ul class="navbar-nav ms-auto d-flex align-items-center">
           <li class="nav-item d-flex align-items-center" v-if="isAuthenticated">
-            <img src="../img/user.png" alt="Imagem Usuario" class="navbar-logo me-2" />
+            <img
+              src="../img/user.png"
+              alt="Imagem Usuario"
+              class="navbar-logo me-2"
+            />
             <span class="nav-link">Olá, {{ user.username }}</span>
           </li>
 
@@ -43,15 +49,17 @@
           </li>
 
           <li class="nav-item" v-else>
-            <RouterLink class="btn btn-secondary ms-3" to="/login">Login</RouterLink>
+            <RouterLink class="btn btn-secondary ms-3" to="/login"
+              >Login</RouterLink
+            >
           </li>
 
           <li class="nav-item ms-4">
             <div id="shopping-cart">
-              <button type="button" class="btn btn-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample">
+              <router-link to="/carrinho" class="btn btn-success">
                 <i class="fas fa-shopping-cart"></i> Carrinho
                 <span class="badge bg-secondary">{{ counter.count }}</span>
-              </button>
+              </router-link>
             </div>
           </li>
         </ul>
@@ -59,23 +67,42 @@
     </div>
   </nav>
 
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+  <div
+    class="offcanvas offcanvas-end"
+    tabindex="-1"
+    id="offcanvasExample"
+    aria-labelledby="offcanvasExampleLabel"
+  >
     <div class="offcanvas-header">
       <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"
+      ></button>
     </div>
     <div class="offcanvas-body">
       <div>
-        Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+        Some text as placeholder. In real life you can have the elements you
+        have chosen. Like, text, images, lists, etc.
       </div>
       <div class="dropdown mt-3">
-        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+        <button
+          class="btn btn-secondary dropdown-toggle"
+          type="button"
+          data-bs-toggle="dropdown"
+        >
           Dropdown button
         </button>
         <ul class="dropdown-menu">
           <li><a class="dropdown-item" href="#">Action</a></li>
           <li><a class="dropdown-item" href="#">Another action</a></li>
-          <li><a class="dropdown-item" @click="counter.count = 0">Limpar carrinho</a></li>
+          <li>
+            <a class="dropdown-item" @click="counter.count = 0"
+              >Limpar carrinho</a
+            >
+          </li>
         </ul>
       </div>
     </div>
@@ -96,7 +123,7 @@ const router = useRouter();
 const isAuthenticated = computed(() => auth.isAuthenticated);
 
 // Computado para verificar se o usuário é admin (com validação extra)
-const isAdmin = computed(() => auth.user.role?.name === 'admin');
+const isAdmin = computed(() => auth.user.role?.name === "admin");
 
 // Computado para acessar o usuário
 const user = computed(() => auth.user);

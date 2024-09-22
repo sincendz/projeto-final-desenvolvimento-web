@@ -19,11 +19,11 @@ async function deletar(id: number) {
   try {
     const response = await api.delete(`/cafes/${id}`, {
       headers: {
-        Authorization: `Bearer ${auth.jwt}`, // Adiciona o token de autenticação
+        Authorization: `Bearer ${auth.jwt}`,
       },
     });
     success.value = "Café excluído com sucesso!";
-    await fetchData(); // Atualiza a lista de cafés
+    await fetchData();
   } catch (err: any) {
     error.value = `Erro ao excluir café: ${err.response?.data?.message || err.message}`;
     console.error(err);
