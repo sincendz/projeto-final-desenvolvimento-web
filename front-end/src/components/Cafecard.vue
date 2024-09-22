@@ -56,7 +56,7 @@ const fetchData = async () => {
   try {
     const response = await api.get(BASE_URL + "/api/cafes?populate=*");
     cafes.value = response.data.data;
-    console.log(response.data.data);
+    //console.log(response.data.data);
   } catch (err) {
     error.value = `Erro ao buscar dados: ${err.message}`;
   }

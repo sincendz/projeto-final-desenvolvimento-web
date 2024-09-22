@@ -2,10 +2,9 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "@/views/Home.vue";
 import Login from "@/views/Login.vue";
 import SignUp from "@/views/SignUp.vue";
-import { useAuth } from "@/stores/auth"; // Importe o store de autenticação
+import { useUserStore } from "@/stores/auth"; // Importe o store de autenticação
 import Admin from "@/views/Admin.vue";
-import { Component } from "react";
-import CreateProduct from "@/views/createProduct.vue";
+import Usuarios from "@/views/Admin/usuarios.vue";
 const routes = [
   {
     path: "/",
@@ -28,16 +27,16 @@ const routes = [
     component: Login,
   },
   {
-    path: "/teste",
+    path: "/admin",
     name: "admin",
     component: Admin,
-     meta: { requiresAuth: true }  // Adicione um meta campo para verificar autenticação
+     meta: { requiresAuth: true, requiresRole: 'admin' }  // Adicione um meta campo para verificar autenticação
   },
   {
-    path:'/create',
-    name:"create",
-    component: CreateProduct
-  }
+    path: "/usuarios",
+    name: "usuarios",
+    component: Usuarios,
+  },
 ];
 
 const router = createRouter({
@@ -45,16 +44,21 @@ const router = createRouter({
   routes,
 });
 
-// Guarda de navegação global para verificar autenticação
 router.beforeEach((to, from, next) => {
-  const auth = useAuth();
-  const isAuthenticated = auth.isAuthenticated();
-  
-  if (to.meta.requiresAuth && !isAuthenticated) {
-    next({ name: 'login' });  // Redireciona para a página de login se não autenticado
+  const auth = useUserStore();
+
+  console.log('Rota destino:', to.name);
+  console.log('Usuário autenticado:', auth.isAuthenticated);
+  console.log('Papel do usuário:', auth.user.role?.name);
+
+  if (to.meta.requiresAuth && !auth.isAuthenticated) {
+    next('/login');
+  } else if (to.meta.requiresRole && auth.user.role?.name !== to.meta.requiresRole) {
+    next('/');
   } else {
-    next();  // Permite a navegação se o usuário estiver autenticado ou a rota não exigir autenticação
+    next();
   }
 });
+
 
 export default router;
