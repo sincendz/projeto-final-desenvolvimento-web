@@ -39,28 +39,24 @@ Uma loja de venda de cafés e equipamentos para a produção de café.
 
 É necessário ter o Node.js na versão 20 para rodar (requerido: { node: '>=18.0.0 <=20.x.x', npm: '>=6.0.0' }). A distribuição que eu uso é Debian, então o passo a passo para instalar é o seguinte:
 
-Como eu já tenho o Node.js 22 instalado, precisamos mudar a versão.
 
-## Passos
+# instala a fnm (Fast Node Manager, ou Gestor Rápido de Node)
+curl -fsSL https://fnm.vercel.app/install | bash
 
-1. **Instalar o NVM**: Se você ainda não tiver o NVM instalado, execute o seguinte comando (certifique-se de que o `curl` está instalado):
-   ```bash
-   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
-2. Feche o terminal e abra novamente.
+# ativar a fnm
+source ~/.bashrc
 
-3. Listar versões disponíveis do Node.js: Para ver as versões disponíveis, você pode usar:
-   ```bash
-     nvm ls-remote
-4. Instalar a versão desejada (por exemplo, 20.x): Para instalar a versão 20, execute:
-    ```bash
-        nvm install 20
+# decarregar e instalar a Node.js
+fnm use --install-if-missing 20
 
-5. Usar a versão instalada: Para usar a versão instalada, execute:
-    ```bash
-      nvm use 20
-6. Verificar a versão ativa: Você pode verificar se a versão foi mudada com:
-    ```bash
-      node -v
+# verifica se a versão correta da Node.js está no ambiente
+node -v # deve imprimir `v20.17.0`
+
+# verifica se a versão correta da npm está no ambiente
+npm -v # deve imprimir `10.8.2`
+
+
+## Apos a instalação 
 
 
 # Rodando o Front-end
@@ -85,6 +81,29 @@ Como eu já tenho o Node.js 22 instalado, precisamos mudar a versão.
 4. npm run develop
       ```bash
       npm run develop
+
+Como eu já tenho o Node.js 22 instalado, precisamos mudar a versão.
+
+## Passos
+
+1. **Instalar o NVM**: Se você ainda não tiver o NVM instalado, execute o seguinte comando (certifique-se de que o `curl` está instalado):
+   ```bash
+   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+2. Feche o terminal e abra novamente.
+
+3. Listar versões disponíveis do Node.js: Para ver as versões disponíveis, você pode usar:
+   ```bash
+     nvm ls-remote
+4. Instalar a versão desejada (por exemplo, 20.x): Para instalar a versão 20, execute:
+    ```bash
+        nvm install 20
+
+5. Usar a versão instalada: Para usar a versão instalada, execute:
+    ```bash
+      nvm use 20
+6. Verificar a versão ativa: Você pode verificar se a versão foi mudada com:
+    ```bash
+      node -v
 
 
 # Problemas no Back-end que eu encarei
