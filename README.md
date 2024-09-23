@@ -33,6 +33,80 @@ Uma loja de venda de cafés e equipamentos para a produção de café.
 
 ----
 
+# Rodando o projeto em linux.
+
+# Instalação do Node.js (Versão 20) no Debian
+
+É necessário ter o Node.js na versão 20 para rodar (requerido: { node: '>=18.0.0 <=20.x.x', npm: '>=6.0.0' }). A distribuição que eu uso é Debian, então o passo a passo para instalar é o seguinte:
+
+Como eu já tenho o Node.js 22 instalado, precisamos mudar a versão.
+
+## Passos
+
+1. **Instalar o NVM**: Se você ainda não tiver o NVM instalado, execute o seguinte comando (certifique-se de que o `curl` está instalado):
+   ```bash
+   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+2. Feche o terminal e abra novamente.
+
+3. Listar versões disponíveis do Node.js: Para ver as versões disponíveis, você pode usar:
+   ```bash
+     nvm ls-remote
+4. Instalar a versão desejada (por exemplo, 20.x): Para instalar a versão 20, execute:
+    ```bash
+        nvm install 20
+
+5. Usar a versão instalada: Para usar a versão instalada, execute:
+    ```bash
+      nvm use 20
+6. Verificar a versão ativa: Você pode verificar se a versão foi mudada com:
+    ```bash
+      node -v
+
+
+# Possíveis Problemas
+
+Problema 1: Permissão negada ao rodar o Strapi
+
+    ```bash
+    mario@debian:~/Área de trabalho/projeto-final-desenvolvimento-web/back-end$ npm run develop
+    > back-end@0.1.0 develop
+    > strapi develop
+    sh: 1: strapi: Permission denied
+Solução:
+
+    ```bash
+    chmod +x node_modules/.bin/strapi
+(Faz com que o Strapi execute com as máximas permissões)
+
+Problema 2: Erro ao carregar o arquivo de configuração do Strapi
+
+    ```bash
+      Error: Could not load js config file /home/mario/Área de trabalho/projeto-final-desenvolvimento-web/back-end/node_modules/@strapi/plugin-upload/strapi-server.js:
+      Something went wrong installing the "sharp" module
+      
+Solução:
+
+    ```bash
+    rm -rf node_modules
+    npm install
+
+   Após isso, no meu sistema Debian GNU/Linux 12, eu consegui rodar.
+
+
+
+Esse é o passo a passo completo para configurar o Node.js 20 no Debian e solucionar possíveis problemas ao rodar o Strapi.
+
+
+
+#Já sem problemas, dentro da pasta do backend, rode os seguinte comando:
+
+    ```bash
+        npm run develop
+
+
+
+
+
 # Tecnologias Utilizadas
 
 ## Frontend
