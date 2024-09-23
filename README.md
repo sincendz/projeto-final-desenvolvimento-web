@@ -86,6 +86,10 @@ Uma loja de venda de cafés e equipamentos para a produção de café.
       ```bash
       npm run develop
 
+# Usuario Admin
+Login : bruno@ufc.br
+senha: bruno@ufc.br
+
 Como eu já tenho o Node.js 22 instalado, precisamos mudar a versão.
 
 ## Passos
