@@ -40,20 +40,24 @@ Uma loja de venda de cafés e equipamentos para a produção de café.
 É necessário ter o Node.js na versão 20 para rodar (requerido: { node: '>=18.0.0 <=20.x.x', npm: '>=6.0.0' }). A distribuição que eu uso é Debian, então o passo a passo para instalar é o seguinte:
 
 
-# instala a fnm (Fast Node Manager, ou Gestor Rápido de Node)
-curl -fsSL https://fnm.vercel.app/install | bash
+1. instala a fnm (Fast Node Manager, ou Gestor Rápido de Node)
+   ```bash
+     curl -fsSL https://fnm.vercel.app/install | bash
+3. ativar a fnm
+    ```bash
+     source ~/.bashrc
 
-# ativar a fnm
-source ~/.bashrc
+5. decarregar e instalar a Node.js
+     ```bash
+     fnm use --install-if-missing 20
 
-# decarregar e instalar a Node.js
-fnm use --install-if-missing 20
+7. verifica se a versão correta da Node.js está no ambiente
+   ```bash
+     node -v # deve imprimir `v20.17.0`
 
-# verifica se a versão correta da Node.js está no ambiente
-node -v # deve imprimir `v20.17.0`
-
-# verifica se a versão correta da npm está no ambiente
-npm -v # deve imprimir `10.8.2`
+9. verifica se a versão correta da npm está no ambiente
+   ```bash
+     npm -v # deve imprimir `10.8.2`
 
 
 ## Apos a instalação 
