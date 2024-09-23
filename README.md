@@ -63,7 +63,31 @@ Como eu já tenho o Node.js 22 instalado, precisamos mudar a versão.
       node -v
 
 
-# Possíveis Problemas
+# Rodando o Front-end
+1. Entre na pasta /front-end e execute os seguintes comandos:
+
+2. npm install
+     ```bash
+     npm install
+
+3. npm run dev
+      ```bash
+      npm run dev
+
+
+# Rodando o Back-end
+1. Entre na pasta /back-end e execute os seguintes comandos:
+
+2. npm install
+     ```bash
+     npm install
+
+4. npm run develop
+      ```bash
+      npm run develop
+
+
+# Problemas no Back-end que eu encarei
 
 Problema 1: Permissão negada ao rodar o Strapi
 
