@@ -17,14 +17,13 @@ Uma loja de venda de cafés e equipamentos para a produção de café.
 
 - Produto
 - Pedido
-- Carrinho
 - Usuário
 
 ## :triangular_flag_on_post:	 Principais funcionalidades da aplicação
 
 - Administrador : Poderá adicionar,atualizar e remover produtos do catalogo.
-- Usuário registrado: Poderá visualizar os produtos, adicionar ao carrinho e finalizar compras.
-- Usuário nao registrado: Poderá visualizar os produtos e adicionar ao carrinho.
+- Usuário registrado: Poderá visualizar os produtos e adicionar ao carrinho.
+- Usuário nao registrado: Poderá visualizar os produtos.
 
 
 ----
@@ -34,15 +33,22 @@ Uma loja de venda de cafés e equipamentos para a produção de café.
 
 ----
 
-## :desktop_computer: Tecnologias e frameworks utilizados
+# Tecnologias Utilizadas
 
-**Frontend:**
+## Frontend
 
-Lista as tecnologias, frameworks e bibliotecas utilizados.
+- HTML
+- CSS
+- TypeScript (TS)
+- Vue 3
+- Pinia
+- Axios
+- Bootstrap
 
-**Backend:**
+## Backend
 
-Lista as tecnologias, frameworks e bibliotecas utilizados.
+- Strapi
+
 
 
 ## :shipit: Operações implementadas para cada entidade da aplicação
@@ -50,8 +56,7 @@ Lista as tecnologias, frameworks e bibliotecas utilizados.
 
 | Entidade| Criação | Leitura | Atualização | Remoção |
 | --- | --- | --- | --- | --- |
-| Usuário|  |    |  |  |
-| Produto | X |  X  | X | X |
+| Usuário| X |    |  |  |
 | Pedido | X |  X  |  X | X |
 | Carrinho | X |  X  | X | X |
 
@@ -61,5 +66,16 @@ Lista as tecnologias, frameworks e bibliotecas utilizados.
 
 | Método HTTP | URL |
 | --- | --- |
-| GET | api/entidade1/|
-| POST | api/entidade2 |
+| GET | api/cafes/|
+| POST | api/cafes |
+|PUT|  api/cafes/id
+| DELETE| api/cafes/id
+| GET | api/users/|
+| POST | api/auth/local/register |
+|PUT|  api/users/id
+| DELETE| api/cafes/id
+| GET | api/pedidos/|
+| POST | api/pedidos |
+|PUT|  api/pedidos/id
+| DELETE| api/pedidos/id
+
